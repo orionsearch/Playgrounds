@@ -1,7 +1,7 @@
 import Foundation
 
 let url = URL(string: "https://raw.githubusercontent.com/stopwords-iso/stopwords-iso/master/stopwords-iso.json")!
-let text = "How to eat pizza using only chopsticks"
+let text = "Why?"
 // Result: ["eat", "pizza", "chopsticks"]
 func extract(text: String, stop: [String: Any], lang: String = "en") -> [String] {
     let stops = stop[lang] as! [String]
@@ -12,7 +12,10 @@ func extract(text: String, stop: [String: Any], lang: String = "en") -> [String]
             out.append(String(substr))
         }
     }
-    return out
+    if !out.isEmpty {
+        return out
+    }
+    return tokens.map { String($0) }
 }
 
 URLSession.shared.dataTask(with: url) { (data, response, error) in
