@@ -5,17 +5,20 @@ let text = "Why?"
 // Result: ["eat", "pizza", "chopsticks"]
 func extract(text: String, stop: [String: Any], lang: String = "en") -> [String] {
     let stops = stop[lang] as! [String]
-    let tokens = text.split(separator: " ")
+    let tokens = text.components(separatedBy: .punctuationCharacters)
+        .joined()
+        .components(separatedBy: .whitespaces)
+        .filter{!$0.isEmpty}
     var out = [String]()
-    tokens.forEach { (substr) in
-        if !stops.contains(String(substr).lowercased()) {
-            out.append(String(substr))
+    tokens.forEach { (str) in
+        if !stops.contains(str.lowercased()) {
+            out.append(str)
         }
     }
     if !out.isEmpty {
         return out
     }
-    return tokens.map { String($0) }
+    return tokens
 }
 
 URLSession.shared.dataTask(with: url) { (data, response, error) in
